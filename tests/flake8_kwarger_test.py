@@ -3,6 +3,7 @@
 
 import ast
 import os
+import sys
 from pathlib import Path
 from typing import Set
 
@@ -28,8 +29,13 @@ def test_missing_kwargs():
     ret = _results(example)
     msg = "FKO100 Non Keyword-Only Arguments not allowed. Try adding a '*'."
 
+    # python 3.6 returns the line of the @decorator not the def func
+    staticmethod_error_line = 3
+    if sys.version_info < (3, 7):
+        staticmethod_error_line = 2
+
     expected = {
-        f"3:5 {msg}",
+        f"{staticmethod_error_line}:5 {msg}",
         f"10:5 {msg}",
     }
     assert ret == expected
