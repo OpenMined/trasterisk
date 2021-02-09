@@ -1,0 +1,58 @@
+name: PR Tests
+
+on:
+  push:
+    paths:
+      - "**.py"
+      - "setup.cfg"
+      - ".github/workflows/**.yml"
+  pull_request:
+    paths:
+      - "**.py"
+      - "setup.cfg"
+      - ".github/workflows/**.yml"
+
+jobs:
+  python-linting:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - uses: pre-commit/action@v2.0.0
+
+      - name: Upgrade pip
+        run: |
+          pip install --upgrade --user pip
+
+      - name: Run lint checks
+        run: |
+          set -e
+          pre-commit run --all-files
+
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest
