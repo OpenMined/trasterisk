@@ -6,12 +6,12 @@ from typing import Set
 
 from flake8_kwarger import Plugin
 
-example_1 = """
-class A:
+example_1 = """class A:
     @staticmethod
     def foo_bad(forcenamed):
         print(forcenamed)
 
+    @staticmethod
     def foo_good(*, forcenamed):
         print(forcenamed)
 
@@ -20,9 +20,6 @@ class A:
 
     def bar_good(self, *, forcenamed):
         print(self, forcenamed)
-
-a = A()
-a.foo_bad(**{"foo": "bar"})
 """
 
 
