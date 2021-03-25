@@ -16,6 +16,7 @@ class A:
     def foo_bad(forcenamed):
         print(forcenamed)
 
+    @staticmethod
     def foo_good(*, forcenamed):
         print(forcenamed)
 
@@ -27,4 +28,12 @@ class A:
 
     def bar_bad_ignore(_self):  # noqa: FKO100
         print(_self)
+
+    @classmethod
+    def baz_bad(cls, forcenamed):
+        print(forcenamed)
+
+    @classmethod
+    def baz_good(cls, *, forcenamed):
+        print(forcenamed)
 ```
