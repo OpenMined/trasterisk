@@ -21,10 +21,11 @@ class Visitor(ast.NodeVisitor):
     def __init__(self) -> None:
         self.problems: List[Tuple[int, int, str]] = []
 
-    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:  # noqa FKO100
         if len(node.args.args) >= 1:
             if len(node.args.args) == 1 and (
-                node.args.args[0].arg == "self" or node.args.args[0].arg == "cls"
+                node.args.args[0].arg == "self"
+                or node.args.args[0].arg == "cls"  # noqa E501
             ):
                 # allowed
                 pass
@@ -38,12 +39,12 @@ class Plugin:
     name = __name__
     version = importlib_metadata.version(__name__)
 
-    def __init__(self, tree: ast.AST) -> None:
+    def __init__(self, *, tree: ast.AST) -> None:
         self._tree = tree
 
     def run(self) -> Generator[Tuple[int, int, str, Type[Any]], None, None]:
         visitor = Visitor()
-        visitor.visit(self._tree)
+        visitor.visit(node=self._tree)
         for (
             line,
             col,
