@@ -17,7 +17,7 @@ def _results(*, s: str) -> Set[str]:
 
 
 def test_trivial_case():
-    assert _results("") == set()
+    assert _results(s="") == set()
 
 
 def test_missing_kwargs():
