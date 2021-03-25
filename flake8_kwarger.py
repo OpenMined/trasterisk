@@ -23,7 +23,9 @@ class Visitor(ast.NodeVisitor):
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         if len(node.args.args) >= 1:
-            if len(node.args.args) == 1 and node.args.args[0].arg == "self":
+            if len(node.args.args) == 1 and (
+                node.args.args[0].arg == "self" or node.args.args[0].arg == "cls"
+            ):
                 # allowed
                 pass
             else:
