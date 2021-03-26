@@ -12,7 +12,7 @@ from flake8_kwarger import Plugin
 
 def _results(*, s: str) -> Set[str]:
     tree = ast.parse(s)
-    plugin = Plugin(tree=tree)
+    plugin = Plugin(tree)
     return {f"{line}:{col + 1} {msg}" for line, col, msg, _ in plugin.run()}
 
 
