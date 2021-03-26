@@ -10,14 +10,14 @@ from typing import Set
 from flake8_kwarger import Plugin
 
 
-def _results(s: str) -> Set[str]:
+def _results(*, s: str) -> Set[str]:
     tree = ast.parse(s)
     plugin = Plugin(tree)
     return {f"{line}:{col + 1} {msg}" for line, col, msg, _ in plugin.run()}
 
 
 def test_trivial_case():
-    assert _results("") == set()
+    assert _results(s="") == set()
 
 
 def test_missing_kwargs():
@@ -26,7 +26,7 @@ def test_missing_kwargs():
     with open(example_file) as f:
         example = "".join(f.readlines())
 
-    ret = _results(example)
+    ret = _results(s=example)
     msg = "FKO100 Non Keyword-Only Arguments not allowed. Try adding a '*'."
 
     # python 3.7 returns the line of the @decorator not the def func
@@ -34,8 +34,6 @@ def test_missing_kwargs():
     if sys.version_info < (3, 8):
         staticmethod_error_line = 2
 
-    expected = {
-        f"{staticmethod_error_line}:5 {msg}",
-        f"10:5 {msg}",
-    }
+    expected = {f"{staticmethod_error_line}:5 {msg}", f"10:5 {msg}"}
+
     assert ret == expected
