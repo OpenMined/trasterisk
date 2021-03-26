@@ -13,10 +13,3 @@ class A:
     def bar_good(self, *, forcenamed):
         print(self, forcenamed)
 
-    @classmethod
-    def baz_bad(cls, forcenamed):
-        print(forcenamed)
-
-    @classmethod
-    def baz_good(cls, *, forcenamed):
-        print(forcenamed)
