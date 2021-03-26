@@ -12,4 +12,3 @@ class A:
 
     def bar_good(self, *, forcenamed):
         print(self, forcenamed)
-

@@ -34,9 +34,6 @@ def test_missing_kwargs():
     if sys.version_info < (3, 8):
         staticmethod_error_line = 2
 
-    expected = {
-        f"{staticmethod_error_line}:5 {msg}",
-        f"10:5 {msg}"
-    }
-    
+    expected = {f"{staticmethod_error_line}:5 {msg}", f"10:5 {msg}"}
+
     assert ret == expected
